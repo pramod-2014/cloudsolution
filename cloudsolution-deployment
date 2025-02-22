@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudsolution-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloudsolution
+  template:
+    metadata:
+      labels:
+        app: cloudsolution
+    spec:
+      containers:
+      - name: cloudsolution
+        image: your-dockerhub-username/cloudsolution:latest
+        ports:
+        - containerPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: cloudsolution-service
+spec:
+  selector:
+    app: cloudsolution
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 30008
+  type: NodePort
